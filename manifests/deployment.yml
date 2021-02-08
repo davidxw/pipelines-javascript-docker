@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: davidxwpipelinesjavascriptdocker 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: davidxwpipelinesjavascriptdocker
+  template:
+    metadata:
+      labels:
+        app: davidxwpipelinesjavascriptdocker 
+    spec:
+      containers:
+        - name: davidxwpipelinesjavascriptdocker 
+          image: aksdeploydemo1.azurecr.io/davidxwpipelinesjavascriptdocker
+          ports:
+          - containerPort: 8080
