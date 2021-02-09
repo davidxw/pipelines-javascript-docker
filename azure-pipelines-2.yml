@@ -32,7 +32,14 @@ stages:
         tags: |
           $(tag)
           
-    
+    - task: HelmDeploy@0
+      inputs:
+        azureSubscriptionForACR: 'dwatson CSA subscription(8b20cf3a-4f12-44df-bc4a-f9a0fc9fb115)'
+        azureResourceGroupForACR: 'aksdeploydemo1'
+        azureContainerRegistry: 'aksdeploydemo1.azurecr.io'
+        command: 'save'
+        chartNameForACR: '${containerRegistry)/helm/sampleapp1'
+        chartPathForACR: '$(Pipeline.Workspace)/sampleapp1'
 
 - stage: Deploy
   displayName: Deploy stage
