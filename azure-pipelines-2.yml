@@ -1,0 +1,72 @@
+resources:
+- repo: self
+
+variables:
+
+  dockerRegistryServiceConnection: '790ae6a3-15c9-460e-a3ff-82b33fe11176'
+  imageRepository: 'davidxwpipelinesjavascriptdocker'
+  containerRegistry: 'aksdeploydemo1.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          
+  # helm chart required for deployment step        
+    - publish: sampleapp1
+      artifact: sampleapp1
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy with Helm
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'davidxwpipelinesjavascriptdocker-8515.demo2'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: HelmInstaller@0
+            displayName: Install Helm
+            inputs:
+              helmVersion: '3.3.4'
+              checkLatestHelmVersion: false
+              installKubectl: true
+
+          - task: HelmDeploy@0
+            displayName: Deploy app with chart
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: 'aksdeploydemo1-demo2'
+              namespace: 'demo2'
+              command: 'upgrade'
+              chartType: 'FilePath'
+              chartPath: '$(Pipeline.Workspace)/sampleapp1'
+              releaseName: 'sampleapp1'
+              overrideValues: 'image.tag=$(tag)'
+
+
