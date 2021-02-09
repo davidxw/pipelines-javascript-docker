@@ -16,7 +16,8 @@ variables:
   containerRegistry: 'aksdeploydemo1.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'aksdeploydemo110450719-auth'
+  resourceGroup: 'aksdeploydemo1'
+  azureSubscriptionForACR: ''
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -76,4 +77,8 @@ stages:
               chartPath: '$(Pipeline.Workspace)/sampleapp1'
               releaseName: 'sampleapp1'
               overrideValues: 'image.tag=$(tag)'
+              #azureContainerRegistry: $(containerRegistry)
+              #azureResourceGroupForACR: $(aksdeploydemo1)
+              #azureSubscriptionForACR: $(azureSubscriptionForACR)
+
 
