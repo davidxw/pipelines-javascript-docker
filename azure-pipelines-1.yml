@@ -1,20 +1,13 @@
-# Deploy to Azure Kubernetes Service
-# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 resources:
 - repo: self
 
 variables:
 
-  # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '790ae6a3-15c9-460e-a3ff-82b33fe11176'
   imageRepository: 'davidxwpipelinesjavascriptdocker'
   containerRegistry: 'aksdeploydemo1.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  resourceGroup: 'aksdeploydemo1'
-  azureSubscriptionForACR: ''
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -70,13 +63,10 @@ stages:
               connectionType: 'Kubernetes Service Connection'
               kubernetesServiceConnection: 'aksdeploydemo1-demo2'
               namespace: 'demo2'
-              command: 'install'
+              command: 'upgrade'
               chartType: 'FilePath'
               chartPath: '$(Pipeline.Workspace)/sampleapp1'
               releaseName: 'sampleapp1'
               overrideValues: 'image.tag=$(tag)'
-              #azureContainerRegistry: $(containerRegistry)
-              #azureResourceGroupForACR: $(aksdeploydemo1)
-              #azureSubscriptionForACR: $(azureSubscriptionForACR)
 
 
