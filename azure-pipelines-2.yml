@@ -32,9 +32,7 @@ stages:
         tags: |
           $(tag)
           
-  # helm chart required for deployment step        
-    - publish: sampleapp1
-      artifact: sampleapp1
+    
 
 - stage: Deploy
   displayName: Deploy stage
