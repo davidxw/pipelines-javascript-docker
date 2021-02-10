@@ -74,6 +74,9 @@ stages:
               inlineScript: |
                 az acr login --name $(containerRegistry)
                 az acr helm repo add --name $(containerRegistry)
+                helm chart list
+                helm repo update
+                helm chart list
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
