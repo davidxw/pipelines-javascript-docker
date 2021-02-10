@@ -76,6 +76,7 @@ stages:
                 az acr helm repo add -n $(containerRegistry)
                 helm repo update
                 helm repo list
+                helm chart list
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
