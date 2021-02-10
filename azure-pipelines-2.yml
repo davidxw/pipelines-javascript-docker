@@ -4,6 +4,7 @@ resources:
 variables:
 
   dockerRegistryServiceConnection: '790ae6a3-15c9-460e-a3ff-82b33fe11176'
+  azureSubscriptionServiceConnection: 'dwatson CSA subscription(8b20cf3a-4f12-44df-bc4a-f9a0fc9fb115)'
   imageRepository: 'davidxwpipelinesjavascriptdocker'
   containerRegistry: 'aksdeploydemo1.azurecr.io'
   dockerfilePath: '**/Dockerfile'
@@ -36,9 +37,9 @@ stages:
           
     - task: HelmDeploy@0
       inputs:
-        azureSubscriptionForACR: 'dwatson CSA subscription(8b20cf3a-4f12-44df-bc4a-f9a0fc9fb115)'
+        azureSubscriptionForACR: $(azureSubscriptionServiceConnection)
         azureResourceGroupForACR: 'aksdeploydemo1'
-        azureContainerRegistry: 'aksdeploydemo1.azurecr.io'
+        azureContainerRegistry: '$(containerRegistry)'
         command: 'save'
         chartNameForACR: sampleapp1
         chartPathForACR: sampleapp1
@@ -63,13 +64,15 @@ stages:
               helmVersion: '3.3.4'
               checkLatestHelmVersion: false
               installKubectl: true
-           
-          - task: HelmDeploy@0
+      
+          - task: AzureCLI@2
+            displayName: Login to Azure Container Registry
             inputs:
-              connectionType: 'Kubernetes Service Connection'
-              kubernetesServiceConnection: 'aksdeploydemo1-demo2'
-              namespace: 'demo2'
-              command: 'login'
+              azureSubscription: $(azureSubscriptionServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az acr login --name $(azureContainerRegistry)
 
           - bash: |
              helm chart pull $(containerRegistry)/helm/sampleapp1:latest
