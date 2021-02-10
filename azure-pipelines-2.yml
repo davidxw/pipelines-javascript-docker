@@ -72,12 +72,10 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
-                az acr login --name $(containerRegistry)
-                az acr helm repo add -n $(containerRegistry)
+                helm registry login $(containerRegistry) --username aksdeploydemo1 --password wa1QNhnx1x9Qn2EPQ1o4EDYpkM/VSKBQ
+                helm repo add aksdeploydemo1 https://aksdeploydemo1.azurecr.io
                 helm repo update
                 helm repo list
-                helm pull aksdeploydemo1/helm/sampleapp1
-                helm pull aksdeploydemo1/sampleapp1
                 helm chart list
 
 
