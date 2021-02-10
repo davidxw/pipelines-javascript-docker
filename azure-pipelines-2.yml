@@ -83,7 +83,5 @@ stages:
               chartName: 'sampleapp1'
               releaseName: 'sampleapp1'
               overrideValues: 'image.tag=$(tag)'
+              install: true
            
-
-
-
