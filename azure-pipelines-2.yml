@@ -61,17 +61,29 @@ stages:
               helmVersion: '3.3.4'
               checkLatestHelmVersion: false
               installKubectl: true
+           
+          - task: HelmDeploy@0
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: 'aksdeploydemo1-demo2'
+              namespace: 'demo2'
+              command: 'login'
+
+          - bash: |
+             helm chart pull $(containerRegistry)/helm/sampleapp1 
 
           - task: HelmDeploy@0
-            displayName: Deploy app with chart
+            displayName: Deploy app with chart from repo
             inputs:
               connectionType: 'Kubernetes Service Connection'
               kubernetesServiceConnection: 'aksdeploydemo1-demo2'
               namespace: 'demo2'
               command: 'upgrade'
-              chartType: 'FilePath'
-              chartPath: '$(Pipeline.Workspace)/sampleapp1'
+              chartType: 'Name'
+              chartName: 'sampleapp1'
               releaseName: 'sampleapp1'
               overrideValues: 'image.tag=$(tag)'
+           
+
 
 
