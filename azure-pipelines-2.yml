@@ -73,11 +73,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 az acr login --name $(containerRegistry)
-                az acr helm pull -n $(containerRegistry) /helm/sampleapp1:latest
-
-          # fails with permission error on agent - run az acr helm pull instead
-          #- bash: |
-          #   helm chart pull $(containerRegistry)/helm/sampleapp1:latest
+                az acr helm repo add $(containerRegistry)
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
@@ -87,7 +83,7 @@ stages:
               namespace: 'demo2'
               command: 'upgrade'
               chartType: 'Name'
-              chartName: 'sampleapp1'
+              chartName: '$(containerRegistry)/helm/sampleapp1'
               releaseName: 'sampleapp1'
               overrideValues: 'image.tag=$(tag)'
               install: true
