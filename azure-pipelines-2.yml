@@ -74,7 +74,6 @@ stages:
               inlineScript: |
                 az acr login --name $(containerRegistry)
                 az acr helm repo add --name $(containerRegistry)
-                helm repo update
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
@@ -84,7 +83,7 @@ stages:
               namespace: 'demo2'
               command: 'upgrade'
               chartType: 'Name'
-              chartName: '$(containerRegistry)/helm/sampleapp1'
+              chartName: aksdeploydemo1.azurecr.io/helm/sampleapp1:0.1.0
               releaseName: 'sampleapp1'
               overrideValues: 'image.tag=$(tag)'
               install: true
