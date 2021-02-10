@@ -66,16 +66,18 @@ stages:
               installKubectl: true
       
           - task: AzureCLI@2
-            displayName: Login to Azure Container Registry
+            displayName: Login to Azure Container Registry and pull chart
             inputs:
               azureSubscription: $(azureSubscriptionServiceConnection)
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
                 az acr login --name $(containerRegistry)
+                az acr helm pull -n $(containerRegistry) /helm/sampleapp1:latest
 
-          - bash: |
-             helm chart pull $(containerRegistry)/helm/sampleapp1:latest
+          # fails with permission error on agent - run az acr helm pull instead
+          #- bash: |
+          #   helm chart pull $(containerRegistry)/helm/sampleapp1:latest
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
