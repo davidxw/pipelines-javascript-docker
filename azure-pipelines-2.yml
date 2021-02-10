@@ -72,12 +72,8 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
-                helm registry login $(containerRegistry) --username aksdeploydemo1 --password wa1QNhnx1x9Qn2EPQ1o4EDYpkM/VSKBQ
-                helm repo add aksdeploydemo1 https://aksdeploydemo1.azurecr.io
-                helm repo update
-                helm repo list
-                helm chart list
-
+                az acr login --name $(containerRegistry)
+                az acr helm repo add --name $(containerRegistry)
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
