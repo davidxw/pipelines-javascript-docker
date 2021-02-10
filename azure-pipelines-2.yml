@@ -76,10 +76,8 @@ stages:
                 az acr helm repo add -n $(containerRegistry)
                 helm repo update
                 helm repo list
-                helm chart list
-                helm pull aksdeploydemo1.azurecr.io/helm/sampleapp
-                helm chart list
-                helm pull aksdeploydemo1/helm/sampleapp
+                helm pull aksdeploydemo1/helm/sampleapp1
+                helm pull aksdeploydemo1/sampleapp1
                 helm chart list
 
 
