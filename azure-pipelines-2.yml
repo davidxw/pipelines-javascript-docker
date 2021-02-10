@@ -72,7 +72,7 @@ stages:
               command: 'login'
 
           - bash: |
-             helm chart pull $(containerRegistry)/helm/sampleapp1 
+             helm chart pull $(containerRegistry)/helm/sampleapp1:latest
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
