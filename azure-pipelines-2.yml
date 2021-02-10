@@ -12,6 +12,8 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   
+  # required to pull helm chart from ACR
+  HELM_EXPERIMENTAL_OCI: 1
 
 stages:
 - stage: Build
