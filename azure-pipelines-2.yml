@@ -38,8 +38,8 @@ stages:
         azureResourceGroupForACR: 'aksdeploydemo1'
         azureContainerRegistry: 'aksdeploydemo1.azurecr.io'
         command: 'save'
-        chartNameForACR: '${containerRegistry)/helm/sampleapp1'
-        chartPathForACR: '$(Pipeline.Workspace)/sampleapp1'
+        chartNameForACR: '$(containerRegistry)/helm/sampleapp1'
+        chartPathForACR: sampleapp1
 
 - stage: Deploy
   displayName: Deploy stage
