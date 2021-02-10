@@ -77,6 +77,11 @@ stages:
                 helm repo update
                 helm repo list
                 helm chart list
+                helm pull aksdeploydemo1.azurecr.io/helm/sampleapp
+                helm chart list
+                helm pull aksdeploydemo1/helm/sampleapp
+                helm chart list
+
 
           - task: HelmDeploy@0
             displayName: Deploy app with chart from repo
