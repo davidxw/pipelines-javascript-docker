@@ -38,7 +38,7 @@ stages:
         azureResourceGroupForACR: 'aksdeploydemo1'
         azureContainerRegistry: 'aksdeploydemo1.azurecr.io'
         command: 'save'
-        chartNameForACR: '$(containerRegistry)/helm/sampleapp1'
+        chartNameForACR: sampleapp1:$(tag)
         chartPathForACR: sampleapp1
 
 - stage: Deploy
